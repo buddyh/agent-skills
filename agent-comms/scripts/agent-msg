@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+"""
+agent-msg: tmux communication for Claude Code agent sessions.
+
+Usage:
+    agent-msg list                        # List tmux sessions
+    agent-msg send <session> <message>    # Send to session (types + Enter)
+    agent-msg read <session> [--lines N]  # Read session output
+    agent-msg info <session>              # Get session working directory
+
+Examples:
+    agent-msg list
+    agent-msg send worker-1 "about to start server on 3000, you using that port?"
+    agent-msg read worker-1 --lines 50
+"""
+
+import argparse
+import subprocess
+import sys
+
+
+def list_sessions():
+    """List all tmux sessions."""
+    try:
+        result = subprocess.run(
+            ['tmux', 'list-sessions', '-F', '#{session_name}\t#{session_windows}\t#{session_attached}'],
+            capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            print("No tmux sessions found")
+            return
+
+        print("SESSION                  WINDOWS  ATTACHED")
+        print("-" * 50)
+        for line in result.stdout.strip().split('\n'):
+            if line:
+                parts = line.split('\t')
+                name = parts[0]
+                windows = parts[1] if len(parts) > 1 else '?'
+                attached = 'yes' if len(parts) > 2 and parts[2] == '1' else 'no'
+                print(f"{name[:24]:<24} {windows:<8} {attached}")
+    except FileNotFoundError:
+        print("Error: tmux not found")
+        sys.exit(1)
+
+
+def send_message(session, message, enter=True):
+    """Send keys to a tmux session."""
+    try:
+        cmd = ['tmux', 'send-keys', '-t', session, message]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+
+        if result.returncode != 0:
+            print(f"Error: {result.stderr.strip()}")
+            return False
+
+        if enter:
+            subprocess.run(['tmux', 'send-keys', '-t', session, 'Enter'])
+
+        print(f"Sent to {session}")
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+
+def read_output(session, lines=50):
+    """Capture pane content from a tmux session."""
+    try:
+        result = subprocess.run(
+            ['tmux', 'capture-pane', '-t', session, '-p', '-S', f'-{lines}'],
+            capture_output=True, text=True
+        )
+        if result.returncode != 0:
+            print(f"Error: {result.stderr.strip()}")
+            return None
+
+        return result.stdout
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
+
+def get_info(session):
+    """Get session info including working directory."""
+    try:
+        result = subprocess.run(
+            ['tmux', 'display-message', '-t', session, '-p', '#{pane_current_path}'],
+            capture_output=True, text=True
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+    except:
+        pass
+    return None
+
+
+def main():
+    parser = argparse.ArgumentParser(description='tmux communication for Claude Code agents')
+    subparsers = parser.add_subparsers(dest='command', help='commands')
+
+    # list
+    subparsers.add_parser('list', help='List tmux sessions')
+
+    # send
+    send_p = subparsers.add_parser('send', help='Send message to session')
+    send_p.add_argument('session', help='Target tmux session name')
+    send_p.add_argument('message', help='Message to send')
+    send_p.add_argument('--no-enter', action='store_true', help="Don't press enter after")
+
+    # read
+    read_p = subparsers.add_parser('read', help='Read session output')
+    read_p.add_argument('session', help='Target tmux session name')
+    read_p.add_argument('--lines', type=int, default=50, help='Lines to capture (default: 50)')
+
+    # info
+    info_p = subparsers.add_parser('info', help='Get session info')
+    info_p.add_argument('session', help='Target tmux session name')
+
+    args = parser.parse_args()
+
+    if args.command == 'list':
+        list_sessions()
+    elif args.command == 'send':
+        send_message(args.session, args.message, enter=not args.no_enter)
+    elif args.command == 'read':
+        output = read_output(args.session, args.lines)
+        if output:
+            print(output)
+    elif args.command == 'info':
+        cwd = get_info(args.session)
+        print(f"Working directory: {cwd or 'unknown'}")
+    else:
+        parser.print_help()
+
+
+if __name__ == '__main__':
+    main()
