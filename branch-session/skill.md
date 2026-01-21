@@ -1,13 +1,13 @@
 ---
 name: branch-session
-description: Branch the current Claude Code session into a new tmux session using --resume. Creates a parallel conversation that can diverge independently. Use when you want to explore an alternative approach without losing your current context.
+description: Branch the current Claude Code session into a new tmux session using --fork-session. Creates a true fork with a new session ID while preserving conversation state. Use when you want to explore an alternative approach without losing your current context.
 ---
 
 # Branch Session
 
 ## Overview
 
-Create a "branch" of the current Claude Code conversation by spawning a new tmux session that resumes from the same session ID. Both sessions can then diverge independently.
+Create a "branch" of the current Claude Code conversation by spawning a new tmux session with a forked session. Uses `--fork-session` to create a true fork with a new session ID while preserving conversation state. The original session remains untouched.
 
 ## Workflow
 
@@ -81,4 +81,4 @@ chmod +x ~/.claude/skills/branch-session/scripts/branch_session.sh
 ## Resources
 
 ### scripts/
-- `branch_session.sh` - Creates tmux session and runs `claude --resume`
+- `branch_session.sh` - Creates tmux session and runs `claude --resume --fork-session`
