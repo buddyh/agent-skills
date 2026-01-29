@@ -13,8 +13,8 @@ Create a "branch" of the current conversation by spawning a new tmux session wit
 
 This skill automatically detects your environment:
 
-- **Claude Code**: Uses `~/.claude/projects/` session files and `--fork-session`
-- **Codex**: Uses `~/.codex/sessions/` and `CODEX_SESSION_ID` environment variable
+- **Claude Code**: Uses `~/.claude/projects/` session files
+- **Codex**: Uses `~/.codex/sessions/` and the `codex fork` command
 
 ## Workflow
 
@@ -34,12 +34,11 @@ This skill automatically detects your environment:
    ```
 
 **Codex:**
-```bash
-SESSION_ID=${CODEX_SESSION_ID}
-# Or find from ~/.codex/sessions/
-SESSION_FILE=$(ls -t ~/.codex/sessions/*.jsonl 2>/dev/null | head -1)
-SESSION_ID=$(basename "$SESSION_FILE" .jsonl)
-```
+1. Find session IDs from the sessions folder:
+   ```bash
+   ls -t ~/.codex/sessions/*.jsonl | head -5
+   ```
+2. Or use `codex fork --last` to fork the most recent session directly
 
 ### Step 2: Generate Branch Name
 
@@ -59,7 +58,11 @@ BRANCH_NAME="branch-${SHORT_ID}-${TIMESTAMP}"
 
 **Codex:**
 ```bash
-~/.claude/skills/branch-session/scripts/branch_codex.sh "$PWD" "$SESSION_ID" "$BRANCH_NAME"
+# Fork most recent session (simplest)
+codex fork --last
+
+# Or fork a specific session
+codex fork <SESSION_ID>
 ```
 
 ### Step 4: Confirm
@@ -101,5 +104,4 @@ chmod +x ~/.claude/skills/branch-session/scripts/*.sh
 ## Resources
 
 ### scripts/
-- `branch_session.sh` - Creates tmux session and runs `claude --resume --fork-session`
-- `branch_codex.sh` - Creates tmux session and runs `codex --resume --fork-session` (Codex)
+- `branch_session.sh` - Creates tmux session and resumes Claude Code

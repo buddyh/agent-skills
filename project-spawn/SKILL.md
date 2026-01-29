@@ -11,10 +11,10 @@ Transfer context from the current conversation to a new session in a different p
 
 ## Platform Support
 
-- **Claude Code**: Uses `~/.claude/projects/` for session storage
-- **Codex**: Uses `~/.codex/sessions/` for session storage
+- **Claude Code**: Uses `~/.claude/projects/` for session storage, `claude` CLI
+- **Codex**: Uses `~/.codex/sessions/` for session storage, `codex` CLI
 
-The handoff workflow is identical on both platforms.
+The handoff workflow is similar on both platforms.
 
 ## Workflow
 
@@ -83,13 +83,8 @@ Write `PROJECT_HANDOFF.md` to the target project directory:
 
 **Codex:**
 ```bash
-~/.claude/skills/project-spawn/scripts/spawn_codex.sh "<project-path>" "<session-name>"
+codex --cd "<project-path>" "Read PROJECT_HANDOFF.md and continue with the tasks described there."
 ```
-
-The script will:
-1. Create a new tmux session named after the project
-2. Change to the project directory
-3. Start the CLI with initial prompt to read the handoff
 
 ### Step 5: Confirm to User
 
@@ -120,4 +115,3 @@ chmod +x ~/.claude/skills/project-spawn/scripts/*.sh
 
 ### scripts/
 - `spawn_session.sh` - Creates tmux session and launches Claude Code with handoff context
-- `spawn_codex.sh` - Creates tmux session and launches Codex with handoff context
