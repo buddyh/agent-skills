@@ -5,7 +5,16 @@ description: Refactor bloated skill.md files using progressive disclosure patter
 
 # Skill Refactoring
 
-Refactor bloated skill.md files to follow Claude Code best practices using the progressive disclosure pattern.
+Refactor bloated skill.md files to follow best practices using the progressive disclosure pattern.
+
+## Platform Support
+
+This skill works for both Claude Code and Codex skills:
+
+- **Claude Code**: Skills located in `~/.claude/skills/`
+- **Codex**: Skills located in `~/.codex/skills/`
+
+Both platforms use the same `skill.md` format and 500-line limit.
 
 ## Purpose
 
@@ -48,7 +57,7 @@ wc -l ~/.claude/skills/my-skill/skill.md
 
 ### 3. Best Practices (`references/best-practices.md`)
 **Read this for:**
-- Official Claude Code guidance
+- Official guidance
 - Progressive disclosure principles
 - What goes in skill.md vs references/
 - Well-structured skill patterns

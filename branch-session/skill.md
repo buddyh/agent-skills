@@ -1,20 +1,26 @@
 ---
 name: branch-session
-description: Branch the current Claude Code session into a new tmux session using --fork-session. Creates a true fork with a new session ID while preserving conversation state. Use when you want to explore an alternative approach without losing your current context.
+description: Branch the current Claude Code or Codex session into a new tmux session. Creates a true fork with a new session ID while preserving conversation state. Use when you want to explore an alternative approach without losing your current context.
 ---
 
 # Branch Session
 
 ## Overview
 
-Create a "branch" of the current Claude Code conversation by spawning a new tmux session with a forked session. Uses `--fork-session` to create a true fork with a new session ID while preserving conversation state. The original session remains untouched.
+Create a "branch" of the current conversation by spawning a new tmux session with a forked session. Uses platform-specific fork commands to create a true fork with a new session ID while preserving conversation state. The original session remains untouched.
+
+## Platform Detection
+
+This skill automatically detects your environment:
+
+- **Claude Code**: Uses `~/.claude/projects/` session files and `--fork-session`
+- **Codex**: Uses `~/.codex/sessions/` and `CODEX_SESSION_ID` environment variable
 
 ## Workflow
 
 ### Step 1: Get Current Session ID
 
-Find the active Claude Code session by:
-
+**Claude Code:**
 1. Get current working directory
 2. Convert to Claude project path format:
    ```bash
@@ -27,6 +33,14 @@ Find the active Claude Code session by:
    SESSION_ID=$(basename "$SESSION_FILE" .jsonl)
    ```
 
+**Codex:**
+```bash
+SESSION_ID=${CODEX_SESSION_ID}
+# Or find from ~/.codex/sessions/
+SESSION_FILE=$(ls -t ~/.codex/sessions/*.jsonl 2>/dev/null | head -1)
+SESSION_ID=$(basename "$SESSION_FILE" .jsonl)
+```
+
 ### Step 2: Generate Branch Name
 
 Create a unique session name:
@@ -38,9 +52,14 @@ BRANCH_NAME="branch-${SHORT_ID}-${TIMESTAMP}"
 
 ### Step 3: Execute Branch
 
-Run the branch script:
+**Claude Code:**
 ```bash
 ~/.claude/skills/branch-session/scripts/branch_session.sh "$PWD" "$SESSION_ID" "$BRANCH_NAME"
+```
+
+**Codex:**
+```bash
+~/.claude/skills/branch-session/scripts/branch_codex.sh "$PWD" "$SESSION_ID" "$BRANCH_NAME"
 ```
 
 ### Step 4: Confirm
@@ -67,18 +86,20 @@ To attach: tmux attach -t branch-a1b2c-1508
 
 ## Setup
 
-Make the script executable (one-time):
+Make the scripts executable (one-time):
 ```bash
-chmod +x ~/.claude/skills/branch-session/scripts/branch_session.sh
+chmod +x ~/.claude/skills/branch-session/scripts/*.sh
 ```
 
 ## Requirements
 
 - tmux installed and running
-- Claude Code CLI (`claude` command available)
-- Active Claude Code session to branch from
+- **Claude Code**: `claude` CLI available
+- **Codex**: `codex` CLI available
+- Active session to branch from
 
 ## Resources
 
 ### scripts/
 - `branch_session.sh` - Creates tmux session and runs `claude --resume --fork-session`
+- `branch_codex.sh` - Creates tmux session and runs `codex --resume --fork-session` (Codex)

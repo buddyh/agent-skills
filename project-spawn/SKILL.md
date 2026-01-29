@@ -1,13 +1,20 @@
 ---
 name: project-spawn
-description: Spawn a new Claude Code session in a project directory with context handoff. This skill should be used when discussion shifts to a different project/repo and the user wants to work on it in a dedicated session. Creates a handoff document with relevant context from the current conversation, then launches a new tmux session with Claude Code ready to continue.
+description: Spawn a new Claude Code or Codex session in a project directory with context handoff. This skill should be used when discussion shifts to a different project/repo and the user wants to work on it in a dedicated session. Creates a handoff document with relevant context from the current conversation, then launches a new tmux session ready to continue.
 ---
 
 # Project Spawn
 
 ## Overview
 
-Transfer context from the current conversation to a new Claude Code session in a different project directory. This enables seamless context handoff when pivoting from a general session to focused project work.
+Transfer context from the current conversation to a new session in a different project directory. This enables seamless context handoff when pivoting from a general session to focused project work.
+
+## Platform Support
+
+- **Claude Code**: Uses `~/.claude/projects/` for session storage
+- **Codex**: Uses `~/.codex/sessions/` for session storage
+
+The handoff workflow is identical on both platforms.
 
 ## Workflow
 
@@ -69,16 +76,20 @@ Write `PROJECT_HANDOFF.md` to the target project directory:
 
 ### Step 4: Launch Session
 
-Execute the spawn script to create the new session:
-
+**Claude Code:**
 ```bash
 ~/.claude/skills/project-spawn/scripts/spawn_session.sh "<project-path>" "<session-name>"
+```
+
+**Codex:**
+```bash
+~/.claude/skills/project-spawn/scripts/spawn_codex.sh "<project-path>" "<session-name>"
 ```
 
 The script will:
 1. Create a new tmux session named after the project
 2. Change to the project directory
-3. Start Claude Code with initial prompt to read the handoff
+3. Start the CLI with initial prompt to read the handoff
 
 ### Step 5: Confirm to User
 
@@ -99,7 +110,14 @@ To attach: tmux attach -t <session-name>
 
 **Handoff location**: `<project-dir>/PROJECT_HANDOFF.md`
 
+## Setup
+
+```bash
+chmod +x ~/.claude/skills/project-spawn/scripts/*.sh
+```
+
 ## Resources
 
 ### scripts/
 - `spawn_session.sh` - Creates tmux session and launches Claude Code with handoff context
+- `spawn_codex.sh` - Creates tmux session and launches Codex with handoff context

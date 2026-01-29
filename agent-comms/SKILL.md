@@ -1,11 +1,19 @@
 ---
 name: agent-comms
-description: "Send messages to other Claude Code sessions via tmux. Hand off complex debugging context, get second opinions, share detailed technical findings across sessions."
+description: "Send messages to other Claude Code or Codex sessions via tmux. Hand off complex debugging context, get second opinions, share detailed technical findings across sessions."
 ---
 
 # Agent Communication
 
-Send messages to and read output from other tmux sessions running Claude Code. Built for coordination between parallel agent sessions.
+Send messages to and read output from other tmux sessions running Claude Code or Codex. Built for coordination between parallel agent sessions.
+
+## Platform Support
+
+Works identically on both platforms:
+- **Claude Code**: Session names follow Claude Code patterns
+- **Codex**: Session names follow Codex patterns
+
+The `[AGENT-MSG]` header pattern works for both.
 
 ## Setup
 
@@ -122,7 +130,7 @@ Do I need to clear the global .node-gyp cache? Or is there a way to force better
 
 ## Why the Header Matters
 
-The receiving Claude Code session sees your message as user input. Without the `[AGENT-MSG]` header, it might think a human is typing. The header tells it:
+The receiving session sees your message as user input. Without the `[AGENT-MSG]` header, it might think a human is typing. The header tells it:
 - This is automated agent-to-agent communication
 - Which session sent it (for replies)
 
