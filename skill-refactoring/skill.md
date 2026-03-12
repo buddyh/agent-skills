@@ -94,8 +94,10 @@ wc -l ~/.claude/skills/my-skill/skill.md
 - [ ] Quick start example included
 - [ ] No extraneous files (README.md, etc.)
 
-## Related Documentation
+## Platform Support
 
-- See `~/.claude/skills/REFACTORING-PLAN.md` for overall plan
-- See `~/.claude/skills/REFACTORING-PROGRESS.md` for progress tracking
-- Official docs: https://code.claude.com/docs/en/skills.md
+Works for both Claude Code and Codex skills:
+- **Claude Code**: Skills in `~/.claude/skills/`
+- **Codex**: Skills in `~/.codex/skills/`
+
+Both platforms use the same SKILL.md format and progressive disclosure pattern.

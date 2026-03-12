@@ -11,10 +11,10 @@ Transfer context from the current conversation to a new session in a different p
 
 ## Platform Support
 
-- **Claude Code**: Uses `~/.claude/projects/` for session storage, `claude` CLI
-- **Codex**: Uses `~/.codex/sessions/` for session storage, `codex` CLI
+- **Claude Code**: `claude` CLI
+- **Codex**: `codex` CLI
 
-The handoff workflow is similar on both platforms.
+The handoff workflow is identical on both platforms.
 
 ## Workflow
 
@@ -22,9 +22,9 @@ The handoff workflow is similar on both platforms.
 
 Determine the target project directory:
 
-1. **If explicit path provided**: Use directly (e.g., `~/repos/my-project`)
-2. **If relative path provided**: Resolve from current working directory
-3. **If no target specified**: Ask the user which project they want to work on
+1. **If explicit path/name provided**: Use directly
+2. **If project name provided**: Search for matching directories in common locations (`~/repos/`, `~/projects/`, etc.)
+3. **If no target specified**: Detect from recent conversation context or ask the user
 
 ### Step 1b: Handle Non-Existent Directory
 
@@ -76,15 +76,23 @@ Write `PROJECT_HANDOFF.md` to the target project directory:
 
 ### Step 4: Launch Session
 
-**Claude Code:**
 ```bash
-~/.claude/skills/project-spawn/scripts/spawn_session.sh "<project-path>" "<session-name>"
+~/.claude/skills/project-spawn/scripts/spawn_session.sh "<project-path>" "<session-name>" [--agent claude|codex]
 ```
 
-**Codex:**
-```bash
-codex --cd "<project-path>" "Read PROJECT_HANDOFF.md and continue with the tasks described there."
-```
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--agent claude\|codex` | Which AI agent to launch (default: auto-detect from environment) |
+
+The script will:
+1. Create a new tmux session named after the project
+2. Change to the project directory
+3. Start the AI agent with initial prompt to read the handoff
+
+**Platform-specific launch commands:**
+- **Claude Code**: `claude`
+- **Codex**: `codex`
 
 ### Step 5: Confirm to User
 
@@ -99,11 +107,20 @@ To attach: tmux attach -t <session-name>
 
 ## Quick Reference
 
-**Invocation**: `/spawn <project-path>` or mention wanting to work on a different project
+**Invocation**: `/spawn <project-name-or-path>` or `/spawn` (auto-detect)
 
 **Session naming**: Uses repo folder name (e.g., `my-project`)
 
 **Handoff location**: `<project-dir>/PROJECT_HANDOFF.md`
+
+**Examples:**
+```bash
+# Spawn with auto-detected agent
+/spawn my-project
+
+# Use Codex instead of Claude
+/spawn my-project --agent codex
+```
 
 ## Setup
 
@@ -114,4 +131,4 @@ chmod +x ~/.claude/skills/project-spawn/scripts/*.sh
 ## Resources
 
 ### scripts/
-- `spawn_session.sh` - Creates tmux session and launches Claude Code with handoff context
+- `spawn_session.sh` - Creates tmux session and launches AI agent with handoff context

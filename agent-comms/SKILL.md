@@ -9,11 +9,7 @@ Send messages to and read output from other tmux sessions running Claude Code or
 
 ## Platform Support
 
-Works identically on both platforms:
-- **Claude Code**: Session names follow Claude Code patterns
-- **Codex**: Session names follow Codex patterns
-
-The `[AGENT-MSG]` header pattern works for both.
+Works identically on both platforms -- the underlying mechanism is tmux, not the AI agent. Sessions can communicate across platforms (a Claude Code session can message a Codex session and vice versa).
 
 ## Setup
 

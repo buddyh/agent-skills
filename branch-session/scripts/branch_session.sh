@@ -35,8 +35,8 @@ tmux new-session -d -s "$NEW_SESSION_NAME" -c "$DIRECTORY"
 # Wait for shell to be ready
 sleep 0.5
 
-# Start Claude Code with --resume --fork-session (creates new session ID)
-tmux send-keys -t "$NEW_SESSION_NAME" "claude --resume $SESSION_ID --fork-session" C-m
+# Start Claude Code with --continue (resumes session context)
+tmux send-keys -t "$NEW_SESSION_NAME" "claude --continue $SESSION_ID" C-m
 
 # Wait for Claude to initialize
 sleep 3
