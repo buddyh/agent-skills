@@ -1,7 +1,7 @@
 ---
 name: deep-dive
 version: "2.0.0"
-description: "Deep dive on any topic. Decomposes into subtopics, researches each in parallel with thorough source gathering, then synthesizes into a comprehensive report (4,000-10,000+ words, 40-100+ sources). Scales depth dynamically based on topic complexity. Comparable to ChatGPT deep research and Perplexity Pro. Use when asked for a deep dive, deep research, comprehensive analysis, or thorough investigation of a topic."
+description: "Deep dive on any topic. Decomposes into subtopics, researches each in parallel with thorough source gathering, then synthesizes into a comprehensive report (4,000-10,000+ words, 40-100+ sources). Scales depth dynamically based on topic complexity. Use when asked for a deep dive, deep research, comprehensive analysis, or thorough investigation of a topic."
 argument-hint: "deep-dive WebTransport vs WebSockets for real-time apps"
 allowed-tools: Bash, Read, Write, WebSearch, WebFetch, Agent, AskUserQuestion
 user-invocable: true
@@ -9,7 +9,7 @@ user-invocable: true
 
 # Deep Dive
 
-Produce comprehensive research reports comparable to ChatGPT Deep Research and Perplexity Pro by decomposing topics into subtopics, researching each in parallel with exhaustive source gathering, and synthesizing into a single deeply-analyzed report.
+Produce comprehensive research reports by decomposing topics into subtopics, researching each in parallel with exhaustive source gathering, and synthesizing into a single deeply-analyzed report.
 
 ## Trigger
 
