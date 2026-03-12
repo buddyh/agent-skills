@@ -1,14 +1,15 @@
 # Agent Skills
 
-Skills I've built for Claude Code and OpenAI Codex CLI workflows. Supports both platforms — some skills detect your environment and adapt accordingly.
+Skills for Claude Code and OpenAI Codex CLI workflows. Supports both platforms -- most skills detect your environment and adapt accordingly.
 
 ## Skills
 
 | Skill | Description | Platform |
 |-------|-------------|----------|
-| [branch-session](branch-session/) | Branch current session into a new tmux session using `--fork-session` (Claude Code) or equivalent (Codex). Creates a true fork with a new session ID while preserving conversation state. | Both |
+| [deep-dive](deep-dive/) | Comprehensive research reports via parallel subtopic decomposition. Scales depth dynamically (4,000-10,000+ words, 40-100+ sources). Comparable to ChatGPT deep research and Perplexity Pro. | Both |
+| [project-spawn](project-spawn/) | Spawn a new session in a project directory with context handoff. Creates handoff document and launches a new tmux session. | Both |
+| [branch-session](branch-session/) | Branch current session into a new tmux session using `--continue` (Claude Code) or `resume` (Codex). Creates a parallel conversation that can diverge independently. | Both |
 | [agent-comms](agent-comms/) | Send messages between Claude Code/Codex sessions via tmux. Hand off debugging context, get second opinions. | Both |
-| [ai-transcript-analyzer](ai-transcript-analyzer/) | Analyze transcripts using OpenAI API. Extract summaries, key insights, action items. | Both |
 | [skill-refactoring](skill-refactoring/) | Refactor bloated skill.md files using progressive disclosure. Move detailed content to references/ while keeping skill.md focused. | Both |
 | [todoist-cli](todoist-cli/) | Manage Todoist tasks via the `todoist` CLI. | Agnostic |
 | [transcribe-and-analyze](transcribe-and-analyze/) | Local transcription with WhisperKit + AI analysis. | Agnostic |
@@ -16,22 +17,28 @@ Skills I've built for Claude Code and OpenAI Codex CLI workflows. Supports both 
 
 ## Installation
 
-Copy a skill to your Claude Code skills directory:
+Copy a skill to your skills directory:
 
 ```bash
 git clone https://github.com/buddyh/agent-skills.git
-cp -r agent-skills/branch-session ~/.claude/skills/
+
+# Claude Code
+cp -r agent-skills/deep-dive ~/.claude/skills/
+
+# Codex
+cp -r agent-skills/deep-dive ~/.codex/skills/
 ```
 
-Make scripts executable:
+Make scripts executable (for skills that include them):
 ```bash
 chmod +x ~/.claude/skills/branch-session/scripts/*.sh
 chmod +x ~/.claude/skills/agent-comms/scripts/*
+chmod +x ~/.claude/skills/project-spawn/scripts/*.sh
 ```
 
 ## Requirements
 
-- tmux (for branch-session, agent-comms)
+- tmux (for branch-session, agent-comms, project-spawn)
 - Python 3 + `openai` package (for ai-transcript-analyzer)
 
 ## License
