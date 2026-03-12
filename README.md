@@ -6,7 +6,7 @@ Skills for Claude Code and OpenAI Codex CLI workflows. Supports both platforms -
 
 | Skill | Description | Platform |
 |-------|-------------|----------|
-| [deep-dive](deep-dive/) | Comprehensive research reports via parallel subtopic decomposition. Scales depth dynamically (4,000-10,000+ words, 40-100+ sources). | Claude & Codex |
+| [deep-dive](deep-dive/) | Comprehensive research reports via parallel subtopic decomposition. Scales depth dynamically (4,000-10,000+ words, 40-100+ sources). | Agnostic |
 | [project-spawn](project-spawn/) | Spawn a new session in a project directory with context handoff. Creates handoff document and launches a new tmux session. | Claude & Codex |
 | [branch-session](branch-session/) | Branch current session into a new tmux session using `--continue` (Claude Code) or `resume` (Codex). Creates a parallel conversation that can diverge independently. | Claude & Codex |
 | [agent-comms](agent-comms/) | Send messages between Claude Code/Codex sessions via tmux. Hand off debugging context, get second opinions. | Claude & Codex |
