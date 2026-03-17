@@ -10,6 +10,7 @@ Skills for Claude Code and OpenAI Codex CLI workflows. Supports both platforms -
 | [project-spawn](project-spawn/) | Spawn a new session in a project directory with context handoff. Creates handoff document and launches a new tmux session. | Claude & Codex |
 | [branch-session](branch-session/) | Branch current session into a new tmux session using `--continue` (Claude Code) or `resume` (Codex). Creates a parallel conversation that can diverge independently. | Claude & Codex |
 | [agent-comms](agent-comms/) | Send messages between Claude Code/Codex sessions via tmux. Hand off debugging context, get second opinions. | Claude & Codex |
+| [claude-session-handoff](claude-session-handoff/) | Recover the right Claude Code session for the current repo, resume from the useful tail or an anchor phrase, and continue where Claude left off. | Claude & Codex |
 | [skill-refactoring](skill-refactoring/) | Refactor bloated skill.md files using progressive disclosure. Move detailed content to references/ while keeping skill.md focused. | Claude & Codex |
 | [todoist-cli](todoist-cli/) | Manage Todoist tasks via the `todoist` CLI. | Agnostic |
 | [transcribe-and-analyze](transcribe-and-analyze/) | Local transcription with WhisperKit + AI analysis. | Agnostic |
