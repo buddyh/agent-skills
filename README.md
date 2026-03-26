@@ -15,6 +15,7 @@ Skills for Claude Code and OpenAI Codex CLI workflows. Supports both platforms -
 | [todoist-cli](todoist-cli/) | Manage Todoist tasks via the `todoist` CLI. | Agnostic |
 | [transcribe-and-analyze](transcribe-and-analyze/) | Local transcription with WhisperKit + AI analysis. | Agnostic |
 | [alexa-cli](alexa-cli/) | Control Amazon Echo/Alexa devices via the `alexacli` CLI. | Agnostic |
+| [app-screenshots](app-screenshots/) | Screenshot every view/screen of an app for marketing, product sites, and docs. Works with macOS native apps, web apps, and Electron. | Agnostic |
 
 ## Installation
 
