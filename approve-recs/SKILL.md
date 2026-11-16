@@ -1,8 +1,9 @@
 ---
 name: approve-recs
 description: >-
-  Turn Claude's recommendations into one-click approvals using the
-  AskUserQuestion tool, then carry out whatever the user approves. Each
+  Turn an agent's recommendations into one-click approvals using the host's
+  question tool (AskUserQuestion in Claude Code, request_user_input in Codex,
+  or the equivalent), then carry out whatever the user approves. Each
   recommendation becomes a question whose first option is the recommended
   action, so the user can approve the whole batch without typing. Use this
   whenever the user says "/approve-recs", "give me the approvals", "let me
@@ -31,22 +32,26 @@ If an action has a precondition or a side effect, put it in the option descripti
 
 Leave out items that need nothing from the user, such as WAIT items blocked on something external. Ask about a WAIT item only when the user has a real choice to make, for example whether to close a stale draft.
 
-## 2. Ask with AskUserQuestion
+## 2. Ask with the question tool
+
+Use whatever structured question tool your host gives you: `AskUserQuestion` in Claude Code, `request_user_input` in Codex, or the equivalent elsewhere. The field names and limits below are Claude Code's. On another host, keep the same shape and adapt to that tool's fields and limits.
+
+If you have no question tool, list the recommendations as numbered text in the same wording, recommended action first, and tell the user how to reply, for example "approve all", "approve 1, 3", or "2: fix first".
 
 **Shape of each question:**
 - Give each recommendation its own question.
-- `header` is 12 characters or fewer and names the target, for example `webapp#46` or `api#10`.
+- `header` is short (12 characters or fewer in Claude Code) and names the target, for example `webapp#46` or `api#10`.
 - `question` says what will happen, in one sentence that ends with "?".
 - Options, 2 to 4 of them:
   1. The recommended action, with " (Recommended)" at the end of the label. The description is the one-line reason.
   2. One realistic alternative, if there is one. For example, the recommendation is MERGE and the alternative is "Fix first", or the recommendation is CLOSE and the alternative is "Keep open".
   3. "Skip for now": do nothing this round.
-- The user can always pick "Other" to type something else, so don't add your own "Other" option.
+- If the tool already offers a free-text "Other" choice, as Claude Code's does, don't add your own.
 
 **Batching:**
-- The tool takes at most 4 questions per call. Ask in rounds of 4, in report order (MERGE first), and keep going until every item has been asked.
+- Claude Code's tool takes at most 4 questions per call. Ask in rounds of that size, in report order (MERGE first), and keep going until every item has been asked.
 - Before the first round, say in one line how many decisions there are and how many rounds that makes.
-- When there are more than 8 items of the same kind (for example 8 FIX items that all mean "start a fix session"), group them. Use one question with `multiSelect: true` that lists up to 4 targets per question, so the user can tick the ones to approve.
+- When there are more than 8 items of the same kind (for example 8 FIX items that all mean "start a fix session"), group them. Use one multi-select question (`multiSelect: true` in Claude Code) that lists up to 4 targets per question, so the user can tick the ones to approve.
 - Don't ask about the same item twice in one session.
 
 **Ordering hint:** put the decisions that unblock other work early. For example, ask about merging #132 before #134, because #134 is stacked on it.
@@ -69,4 +74,4 @@ If the recommendations came from a report file, append a dated section to that f
 
 ## When the user isn't there
 
-Scheduled and unattended runs can't ask questions, so don't call AskUserQuestion in them. Instead, end the report with a section named "Ready for approval". List each recommendation in it in the same wording you'd use for the question: the target, the recommended action, the alternative. The user can then run `/approve-recs` on that report later and get the one-tap version.
+Scheduled and unattended runs can't ask questions, so don't call the question tool in them. Instead, end the report with a section named "Ready for approval". List each recommendation in it in the same wording you'd use for the question: the target, the recommended action, the alternative. The user can then run `/approve-recs` on that report later and get the one-tap version.
