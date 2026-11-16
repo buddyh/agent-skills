@@ -17,6 +17,7 @@ Skills for Claude Code and OpenAI Codex CLI workflows. Supports both platforms -
 | [transcribe-and-analyze](transcribe-and-analyze/) | Local transcription with WhisperKit + AI analysis. | Agnostic |
 | [alexa-cli](alexa-cli/) | Control Amazon Echo/Alexa devices via the `alexacli` CLI. | Agnostic |
 | [app-screenshots](app-screenshots/) | Screenshot every view/screen of an app for marketing, product sites, and docs. Works with macOS native apps, web apps, and Electron. | Agnostic |
+| [approve-recs](approve-recs/) | Turn an agent's recommendations into one-click approvals with the AskUserQuestion tool, recommended action first, then carry out only what was approved and report back. | Claude Code |
 
 ## Installation
 
