@@ -11,6 +11,7 @@ Skills for Claude Code and OpenAI Codex CLI workflows. Supports both platforms -
 | [branch-session](branch-session/) | Branch current session into a new tmux session using `--continue` (Claude Code) or `resume` (Codex). Creates a parallel conversation that can diverge independently. | Claude & Codex |
 | [agent-comms](agent-comms/) | Send messages between Claude Code/Codex sessions via tmux. Hand off debugging context, get second opinions. | Claude & Codex |
 | [claude-session-handoff](claude-session-handoff/) | Recover the right Claude Code session for the current repo, resume from the useful tail or an anchor phrase, and continue where Claude left off. | Claude & Codex |
+| [cross-app-thread-launch](cross-app-thread-launch/) | Launch a thread in another agent's desktop app with its prompt already submitted and get a deep link back. Claude Code to Codex, Codex to Claude, either to T3 Code, or a prefilled ChatGPT chat. macOS. | Claude & Codex |
 | [skill-refactoring](skill-refactoring/) | Refactor bloated skill.md files using progressive disclosure. Move detailed content to references/ while keeping skill.md focused. | Claude & Codex |
 | [todoist-cli](todoist-cli/) | Manage Todoist tasks via the `todoist` CLI. | Agnostic |
 | [transcribe-and-analyze](transcribe-and-analyze/) | Local transcription with WhisperKit + AI analysis. | Agnostic |
@@ -36,6 +37,7 @@ Make scripts executable (for skills that include them):
 chmod +x ~/.claude/skills/branch-session/scripts/*.sh
 chmod +x ~/.claude/skills/agent-comms/scripts/*
 chmod +x ~/.claude/skills/project-spawn/scripts/*.sh
+chmod +x ~/.claude/skills/cross-app-thread-launch/scripts/*.py
 ```
 
 ## Requirements
